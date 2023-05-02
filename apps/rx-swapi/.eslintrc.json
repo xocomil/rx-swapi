@@ -31,6 +31,10 @@
       "files": ["*.html"],
       "extends": ["plugin:@nx/angular-template"],
       "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.html"],
+      "extends": ["@rx-angular/recommended"]
     }
   ]
 }

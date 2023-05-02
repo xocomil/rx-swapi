@@ -14,6 +14,9 @@
     "@angular/platform-browser-dynamic": "~15.2.8",
     "@angular/router": "~15.2.8",
     "@nx/angular": "16.0.1",
+    "@rx-angular/cdk": "latest",
+    "@rx-angular/state": "15.0.0",
+    "@rx-angular/template": "^15.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
@@ -35,6 +38,7 @@
     "@nx/linter": "16.0.1",
     "@nx/web": "16.0.1",
     "@nx/workspace": "16.0.1",
+    "@rx-angular/eslint-plugin": "^1.0.0",
     "@schematics/angular": "~15.2.0",
     "@types/jest": "^29.4.0",
     "@types/node": "18.16.3",
