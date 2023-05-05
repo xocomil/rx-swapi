@@ -1,4 +1,27 @@
 <h1>Welcome to the RxAngular SWAPI</h1>
 
+<div>
+  <button
+    type="button"
+    *rxIf="previous$; let prevUrl"
+    (click)="navigateTo(prevUrl)"
+  >
+    &lt; Prev
+  </button>
+  <button
+    type="button"
+    *rxIf="next$; let nextUrl"
+    (click)="navigateTo(nextUrl)"
+  >
+    Next &gt;
+  </button>
+</div>
+
+<strong>Metadata:</strong><br />
+<pre>{{ metaData$ | push | json }}</pre>
+
 <strong>People:</strong><br />
 <pre>{{ people$ | push | json }}</pre>
+
+<strong>Cached Data:</strong><br />
+<pre>{{ cachedData$ | push | json }}</pre>
