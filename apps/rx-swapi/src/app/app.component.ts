@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   protected readonly metaData$ = this.#peopleState.metaData$;
   protected readonly previous$ = this.#peopleState.previous$;
   protected readonly next$ = this.#peopleState.next$;
+  protected readonly cachedData$ = this.#peopleState.cachedData$;
 
   ngOnInit(): void {
     this.#peopleState.getPeople();

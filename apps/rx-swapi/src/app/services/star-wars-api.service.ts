@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { create } from 'mutative';
+import { Observable, map } from 'rxjs';
 import { ApiResponse } from '../models/api-response';
 
 const API_ROOT = 'https://swapi.tech/api';
@@ -13,6 +14,12 @@ export class StarWarsApiService {
   readonly #httpClient = inject(HttpClient);
 
   getPeople(url = PEOPLE_URL): Observable<ApiResponse> {
-    return this.#httpClient.get<ApiResponse>(url);
+    return this.#httpClient.get<ApiResponse>(url).pipe(
+      map((response) =>
+        create(response, (draft) => {
+          draft.url = url;
+        })
+      )
+    );
   }
 }

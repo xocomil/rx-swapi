@@ -6,6 +6,7 @@ export type ApiResponse = {
   total_pages: number;
   total_records: number;
   results: PeoplePerson[];
+  url: string;
 };
 
 export type PeopleMetaData = Pick<
