@@ -19,9 +19,11 @@ const initialState = (): Partial<PeopleState> => ({
 @Injectable()
 export class PeopleStateService extends RxState<PeopleState> {
   readonly #swapiService = inject(StarWarsApiService);
-  readonly #getPeople$ = new Subject<void>();
+  readonly #getPeople$ = new Subject<string | undefined>();
 
   readonly metaData$ = this.select('metaData');
+  readonly previous$ = this.select('metaData', 'previous');
+  readonly next$ = this.select('metaData', 'next');
   readonly people$ = this.select('people');
   readonly selectedPerson$ = this.select('selectedPerson');
 
@@ -58,7 +60,9 @@ export class PeopleStateService extends RxState<PeopleState> {
     // "Boilerplateless state logic"  -- Michael Hladky
 
     this.connect(
-      this.#getPeople$.pipe(switchMap(() => this.#swapiService.getPeople())),
+      this.#getPeople$.pipe(
+        switchMap((url) => this.#swapiService.getPeople(url))
+      ),
       (oldState, { results: people, ...metaData }) =>
         create(oldState, (draft) => {
           draft.people = people;
@@ -67,7 +71,7 @@ export class PeopleStateService extends RxState<PeopleState> {
     );
   }
 
-  getPeople() {
-    this.#getPeople$.next();
+  getPeople(url?: string) {
+    this.#getPeople$.next(url);
   }
 }
