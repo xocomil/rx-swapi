@@ -28,12 +28,12 @@ export class PeopleStateService extends RxState<PeopleState> {
     map(([state, selectedPage]) => state.cachedData.get(selectedPage)),
     filter(Boolean)
   );
-  readonly metaData$ = this.#currentPage$.pipe(select('metaData'));
-  readonly previous$ = this.metaData$.pipe(select('previous'));
-  readonly next$ = this.metaData$.pipe(select('next'));
+  readonly #metaData$ = this.#currentPage$.pipe(select('metaData'));
+  readonly previous$ = this.#metaData$.pipe(select('previous'));
+  readonly next$ = this.#metaData$.pipe(select('next'));
   readonly people$ = this.#currentPage$.pipe(select('people'));
   readonly selectedPerson$ = this.select('selectedPerson');
-  readonly cachedData$ = this.select('cachedData');
+  readonly #cachedData$ = this.select('cachedData');
 
   constructor() {
     super();
@@ -69,7 +69,7 @@ export class PeopleStateService extends RxState<PeopleState> {
 
     this.connect(
       this.#getPeople$.pipe(
-        withLatestFrom(this.cachedData$),
+        withLatestFrom(this.#cachedData$),
         exhaustMap(([url, cachedData]) => {
           const cachedPage = cachedData.get(url ?? '');
 
