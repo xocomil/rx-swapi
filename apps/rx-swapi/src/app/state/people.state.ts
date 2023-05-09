@@ -2,19 +2,56 @@ import { Injectable, inject } from '@angular/core';
 import { RxState } from '@rx-angular/state';
 import { select } from '@rx-angular/state/selections';
 import { create } from 'mutative';
-import { Subject, exhaustMap, filter, map, of, withLatestFrom } from 'rxjs';
+import {
+  Subject,
+  exhaustMap,
+  filter,
+  map,
+  of,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { PeopleMetaData } from '../models/api-response';
 import { PeoplePerson, Person } from '../models/person.model';
 import { StarWarsApiService } from '../services/star-wars-api.service';
+
+type LoadingState = {
+  state: 'loading';
+};
+
+const createLoadingState = (): LoadingState => ({ state: 'loading' });
+
+type SuccessState = {
+  state: 'success';
+  message?: string;
+};
+
+const createSuccessState = (message?: string): SuccessState => ({
+  state: 'success',
+  message,
+});
+
+type ErrorState = {
+  state: 'error';
+  message: string;
+};
+
+type PendingState = {
+  state: 'pending';
+};
 
 type PeopleState = {
   cachedData: Map<string, { metaData: PeopleMetaData; people: PeoplePerson[] }>;
   selectedPage: string;
   selectedPerson: Person;
+  loadingState: LoadingState | ErrorState | SuccessState | PendingState;
 };
 
 const initialState = (): Partial<PeopleState> => ({
   cachedData: new Map(),
+  loadingState: {
+    state: 'pending',
+  },
 });
 
 @Injectable()
@@ -34,6 +71,11 @@ export class PeopleStateService extends RxState<PeopleState> {
   readonly people$ = this.#currentPage$.pipe(select('people'));
   readonly selectedPerson$ = this.select('selectedPerson');
   readonly #cachedData$ = this.select('cachedData');
+
+  readonly showSpinner$ = this.select(
+    'loadingState',
+    ({ state }) => state === 'loading'
+  );
 
   constructor() {
     super();
@@ -69,6 +111,9 @@ export class PeopleStateService extends RxState<PeopleState> {
 
     this.connect(
       this.#getPeople$.pipe(
+        tap(() => {
+          this.set({ loadingState: createLoadingState() });
+        }),
         withLatestFrom(this.#cachedData$),
         exhaustMap(([url, cachedData]) => {
           const cachedPage = cachedData.get(url ?? '');
@@ -92,6 +137,7 @@ export class PeopleStateService extends RxState<PeopleState> {
             draft.cachedData.set(url ?? '', { metaData, people });
           }
 
+          draft.loadingState = createSuccessState();
           draft.selectedPage = url ?? '';
         })
     );
