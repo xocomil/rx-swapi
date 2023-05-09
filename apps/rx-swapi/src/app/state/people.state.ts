@@ -3,7 +3,9 @@ import { RxState } from '@rx-angular/state';
 import { select } from '@rx-angular/state/selections';
 import { create } from 'mutative';
 import {
+  EMPTY,
   Subject,
+  catchError,
   exhaustMap,
   filter,
   map,
@@ -35,6 +37,11 @@ type ErrorState = {
   state: 'error';
   message: string;
 };
+
+const createErrorState = (message = 'Something bad happened!'): ErrorState => ({
+  state: 'error',
+  message,
+});
 
 type PendingState = {
   state: 'pending';
@@ -76,6 +83,19 @@ export class PeopleStateService extends RxState<PeopleState> {
     'loadingState',
     ({ state }) => state === 'loading'
   );
+
+  readonly showError$ = this.select('loadingState', (loadingState) => {
+    if (loadingState.state === 'error') {
+      return {
+        show: true,
+        message: loadingState.message,
+      };
+    }
+
+    return {
+      show: false,
+    };
+  });
 
   constructor() {
     super();
@@ -127,7 +147,14 @@ export class PeopleStateService extends RxState<PeopleState> {
               people,
               metaData,
               url,
-            }))
+            })),
+            catchError((err) => {
+              console.error('error', err);
+
+              this.set({ loadingState: createErrorState() });
+
+              return EMPTY;
+            })
           );
         })
       ),
