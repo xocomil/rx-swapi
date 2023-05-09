@@ -15,11 +15,15 @@ export class StarWarsApiService {
 
   getPeople(url = PEOPLE_URL): Observable<ApiResponse> {
     return this.#httpClient.get<ApiResponse>(url).pipe(
-      map((response) =>
-        create(response, (draft) => {
+      map((response) => {
+        if (Math.random() < 0.5) {
+          throw new Error('Random error');
+        }
+
+        return create(response, (draft) => {
           draft.url = url;
-        })
-      )
+        });
+      })
     );
   }
 }

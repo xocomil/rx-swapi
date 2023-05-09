@@ -2,26 +2,24 @@
 
 <div>
   <button
+    mat-raised-button
     type="button"
-    *rxIf="previous$; let prevUrl"
+    *ngIf="previous(); let prevUrl"
     (click)="navigateTo(prevUrl)"
   >
     &lt; Prev
   </button>
   <button
+    mat-raised-button
     type="button"
-    *rxIf="next$; let nextUrl"
+    *ngIf="next(); let nextUrl"
     (click)="navigateTo(nextUrl)"
   >
     Next &gt;
   </button>
 </div>
 
-<strong>Metadata:</strong><br />
-<pre>{{ metaData$ | push | json }}</pre>
+<mat-spinner *ngIf="showSpinner()" />
 
 <strong>People:</strong><br />
-<pre>{{ people$ | push | json }}</pre>
-
-<strong>Cached Data:</strong><br />
-<pre>{{ cachedData$ | push | json }}</pre>
+<pre>{{ peopleJson() }}</pre>
