@@ -1,7 +1,6 @@
-import { JsonPipe } from '@angular/common';
+import { JsonPipe, NgIf } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
-import { RxIf } from '@rx-angular/template/if';
-import { PushPipe } from '@rx-angular/template/push';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { PeopleStateService } from './state/people.state';
 
 @Component({
@@ -10,17 +9,17 @@ import { PeopleStateService } from './state/people.state';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [PeopleStateService],
-  imports: [JsonPipe, PushPipe, RxIf],
+  imports: [JsonPipe, NgIf],
 })
 export class AppComponent implements OnInit {
   readonly #peopleState = inject(PeopleStateService);
 
-  protected readonly people$ = this.#peopleState.people$;
+  protected readonly people = toSignal(this.#peopleState.people$, {
+    initialValue: [],
+  });
   protected readonly selectedPerson$ = this.#peopleState.selectedPerson$;
-  protected readonly metaData$ = this.#peopleState.metaData$;
-  protected readonly previous$ = this.#peopleState.previous$;
-  protected readonly next$ = this.#peopleState.next$;
-  protected readonly cachedData$ = this.#peopleState.cachedData$;
+  protected readonly previous = toSignal(this.#peopleState.previous$);
+  protected readonly next = toSignal(this.#peopleState.next$);
 
   ngOnInit(): void {
     this.#peopleState.getPeople();
