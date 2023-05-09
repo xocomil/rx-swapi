@@ -16,7 +16,10 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/rx-swapi/tsconfig.app.json",
         "assets": ["apps/rx-swapi/src/favicon.ico", "apps/rx-swapi/src/assets"],
-        "styles": ["apps/rx-swapi/src/styles.scss"],
+        "styles": [
+          "apps/rx-swapi/src/styles.scss",
+          "@angular/material/prebuilt-themes/deeppurple-amber.css"
+        ],
         "scripts": []
       },
       "configurations": {
