@@ -1,31 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-import {
-  dictionaryToArray,
-  toDictionary,
-  update,
-} from '@rx-angular/cdk/transformations';
 import { RxState } from '@rx-angular/state';
+import { select } from '@rx-angular/state/selections';
 import { create } from 'mutative';
-import { Subject, switchMap, tap } from 'rxjs';
+import { Subject, exhaustMap, filter, map, of, withLatestFrom } from 'rxjs';
 import { PeopleMetaData } from '../models/api-response';
 import { PeoplePerson, Person } from '../models/person.model';
 import { StarWarsApiService } from '../services/star-wars-api.service';
 
 type PeopleState = {
-  cachedData: {
-    [key: string]: {
-      metaData: PeopleMetaData;
-      people: PeoplePerson[];
-      url: string;
-    };
-  };
-  metaData: PeopleMetaData;
-  people: PeoplePerson[];
+  cachedData: Map<string, { metaData: PeopleMetaData; people: PeoplePerson[] }>;
+  selectedPage: string;
   selectedPerson: Person;
 };
 
 const initialState = (): Partial<PeopleState> => ({
-  people: [],
+  cachedData: new Map(),
 });
 
 @Injectable()
@@ -33,10 +22,16 @@ export class PeopleStateService extends RxState<PeopleState> {
   readonly #swapiService = inject(StarWarsApiService);
   readonly #getPeople$ = new Subject<string | undefined>();
 
-  readonly metaData$ = this.select('metaData');
-  readonly previous$ = this.select('metaData', 'previous');
-  readonly next$ = this.select('metaData', 'next');
-  readonly people$ = this.select('people');
+  readonly #selectedPage$ = this.select('selectedPage');
+  readonly #currentPage$ = this.select(
+    withLatestFrom(this.#selectedPage$),
+    map(([state, selectedPage]) => state.cachedData.get(selectedPage)),
+    filter(Boolean)
+  );
+  readonly metaData$ = this.#currentPage$.pipe(select('metaData'));
+  readonly previous$ = this.metaData$.pipe(select('previous'));
+  readonly next$ = this.metaData$.pipe(select('next'));
+  readonly people$ = this.#currentPage$.pipe(select('people'));
   readonly selectedPerson$ = this.select('selectedPerson');
   readonly cachedData$ = this.select('cachedData');
 
@@ -74,21 +69,30 @@ export class PeopleStateService extends RxState<PeopleState> {
 
     this.connect(
       this.#getPeople$.pipe(
-        switchMap((url) => this.#swapiService.getPeople(url)),
-        tap()
-      ),
-      (oldState, { results: people, ...metaData }) =>
-        create(oldState, (draft) => {
-          draft.people = people;
-          draft.metaData = metaData;
-          draft.cachedData = toDictionary(
-            update(dictionaryToArray(oldState.cachedData), {
+        withLatestFrom(this.cachedData$),
+        exhaustMap(([url, cachedData]) => {
+          const cachedPage = cachedData.get(url ?? '');
+
+          if (cachedPage) {
+            return of({ ...cachedPage, url });
+          }
+
+          return this.#swapiService.getPeople(url).pipe(
+            map(({ results: people, ...metaData }) => ({
               people,
               metaData,
-              url: metaData.url,
-            }),
-            'url'
+              url,
+            }))
           );
+        })
+      ),
+      (oldState, { people, metaData, url }) =>
+        create(oldState, (draft) => {
+          if (!oldState.cachedData.has(url ?? '')) {
+            draft.cachedData.set(url ?? '', { metaData, people });
+          }
+
+          draft.selectedPage = url ?? '';
         })
     );
   }
