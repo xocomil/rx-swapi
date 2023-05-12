@@ -10,9 +10,11 @@ import {
   filter,
   map,
   of,
+  retry,
   tap,
   withLatestFrom,
 } from 'rxjs';
+import { P, isMatching } from 'ts-pattern';
 import { PeopleMetaData } from '../models/api-response';
 import { PeoplePerson, Person } from '../models/person.model';
 import { StarWarsApiService } from '../services/star-wars-api.service';
@@ -143,15 +145,34 @@ export class PeopleStateService extends RxState<PeopleState> {
           }
 
           return this.#swapiService.getPeople(url).pipe(
+            tap(() => console.log('test')),
             map(({ results: people, ...metaData }) => ({
               people,
               metaData,
               url,
             })),
-            catchError((err) => {
+            retry(3),
+            catchError((err: unknown) => {
               console.error('error', err);
 
-              this.set({ loadingState: createErrorState() });
+              if (hasMessage(err)) {
+                this.set({ loadingState: createErrorState(err.message) });
+              } else {
+                this.set({ loadingState: createErrorState() });
+              }
+
+              // // err.message or err.data.message or err.error.errorMessage
+              // const errorMessage = match(err)
+              //   .with({ message: P.string }, ({ message }) => message)
+              //   .with(
+              //     { data: { message: P.string } },
+              //     ({ data: { message } }) => message
+              //   )
+              //   .with(
+              //     { error: { errorMessage: P.string } },
+              //     ({ error: { errorMessage } }) => errorMessage
+              //   )
+              //   .otherwise(() => 'Unknown error');
 
               return EMPTY;
             })
@@ -174,3 +195,5 @@ export class PeopleStateService extends RxState<PeopleState> {
     this.#getPeople$.next(url);
   }
 }
+
+const hasMessage = isMatching({ message: P.string });
