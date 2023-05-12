@@ -52,6 +52,3 @@ export class AppComponent implements OnInit {
     this.#peopleState.getPeople(url);
   }
 }
-function openSnackBar(value: any, value1: any) {
-  throw new Error('Function not implemented.');
-}
