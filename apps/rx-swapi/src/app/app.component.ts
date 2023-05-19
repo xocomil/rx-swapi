@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { combineLatest, debounceTime, map, tap } from 'rxjs';
+import { combineLatest, debounceTime, map } from 'rxjs';
 import { PeopleStateService } from './state/people.state';
 
 @Component({
@@ -61,19 +61,11 @@ export class AppComponent implements OnInit {
   });
   protected readonly filteredPeople = toSignal(
     combineLatest([
-      this.#filter$.pipe(
-        tap((filter) => {
-          console.log('filter', filter);
-        }),
-        debounceTime(250),
-        tap((filter) => {
-          console.log('debounced', filter);
-        })
-      ),
-      this.#peopleState.people$,
+      this.#filter$.pipe(debounceTime(250)),
+      this.#peopleState.allPeople$,
     ]).pipe(
       map(([filter, people]) => {
-        console.log('map', people, filter);
+        // console.log('map', people, filter);
 
         if (!filter) {
           return people;

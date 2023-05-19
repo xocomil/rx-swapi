@@ -80,6 +80,9 @@ export class PeopleStateService extends RxState<PeopleState> {
   readonly people$ = this.#currentPage$.pipe(select('people'));
   readonly selectedPerson$ = this.select('selectedPerson');
   readonly #cachedData$ = this.select('cachedData');
+  readonly allPeople$ = this.#cachedData$.pipe(
+    map((pageMap) => [...pageMap.values()].flatMap((page) => page.people))
+  );
 
   readonly showSpinner$ = this.select(
     'loadingState',
