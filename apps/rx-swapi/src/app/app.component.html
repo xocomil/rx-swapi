@@ -19,6 +19,27 @@
   </button>
 </div>
 
+<div>
+  <mat-form-field class="full-width">
+    <mat-label>Person Name</mat-label>
+    <input
+      type="text"
+      name="search"
+      placeholder="Search for a person"
+      aria-label="Person Name"
+      matInput
+      [matAutocomplete]="auto"
+      ngModel
+      (ngModelChange)="filterPeople($event)"
+    />
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredPeople()" [value]="option">
+        {{ option.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
 <mat-spinner *ngIf="showSpinner()" />
 
 <strong>People:</strong><br />
