@@ -1,9 +1,21 @@
-import { NgIf } from '@angular/common';
-import { Component, OnInit, computed, effect, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { NgForOf, NgIf } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { combineLatest, debounceTime, map } from 'rxjs';
 import { PeopleStateService } from './state/people.state';
 
 @Component({
@@ -12,11 +24,23 @@ import { PeopleStateService } from './state/people.state';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   providers: [PeopleStateService, MatSnackBar],
-  imports: [MatButtonModule, MatProgressSpinnerModule, NgIf],
+  imports: [
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressSpinnerModule,
+    NgForOf,
+    NgIf,
+    FormsModule,
+  ],
 })
 export class AppComponent implements OnInit {
   readonly #peopleState = inject(PeopleStateService);
   readonly #snackBar = inject(MatSnackBar);
+
+  readonly #filter = signal('');
+  readonly #filter$ = toObservable(this.#filter);
 
   protected readonly people = toSignal(this.#peopleState.people$, {
     initialValue: [],
@@ -35,6 +59,25 @@ export class AppComponent implements OnInit {
       message: undefined,
     },
   });
+  protected readonly filteredPeople = toSignal(
+    combineLatest([
+      this.#filter$.pipe(debounceTime(250)),
+      this.#peopleState.allPeople$,
+    ]).pipe(
+      map(([filter, people]) => {
+        // console.log('map', people, filter);
+
+        if (!filter) {
+          return people;
+        }
+
+        return people.filter((person) =>
+          person.name.toLocaleLowerCase().includes(filter)
+        );
+      })
+    ),
+    { initialValue: [] }
+  );
 
   constructor() {
     effect(() => {
@@ -50,5 +93,9 @@ export class AppComponent implements OnInit {
 
   protected navigateTo(url: string) {
     this.#peopleState.getPeople(url);
+  }
+
+  protected filterPeople(filter: string) {
+    this.#filter.set(filter.toLocaleLowerCase());
   }
 }
