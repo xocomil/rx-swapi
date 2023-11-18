@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@angular/animations':
     specifier: 16.0.2
@@ -92,7 +96,7 @@ devDependencies:
     version: 16.2.1(cypress@12.12.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4)
   '@nx/eslint-plugin':
     specifier: 16.2.1
-    version: 16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.8.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4)
+    version: 16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.10.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4)
   '@nx/jest':
     specifier: 16.2.1
     version: 16.2.1(@types/node@18.16.3)(nx@16.2.1)(ts-node@10.9.1)(typescript@5.0.4)
@@ -133,8 +137,8 @@ devDependencies:
     specifier: ~8.40.0
     version: 8.40.0
   eslint-config-prettier:
-    specifier: 8.8.0
-    version: 8.8.0(eslint@8.40.0)
+    specifier: 8.10.0
+    version: 8.10.0(eslint@8.40.0)
   eslint-plugin-cypress:
     specifier: ^2.13.3
     version: 2.13.3(eslint@8.40.0)
@@ -4306,10 +4310,10 @@ packages:
     transitivePeerDependencies:
       - nx
 
-  /@nrwl/eslint-plugin-nx@16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.8.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4):
+  /@nrwl/eslint-plugin-nx@16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.10.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4):
     resolution: {integrity: sha512-bTpM+Qj5e5XdZtMTWJg3U72Sh+LCARNIQZt2W9uVEkWBTmknAAyZjn9BlQDskZbaMIwNL7TjG5Py836lpOAMCw==}
     dependencies:
-      '@nx/eslint-plugin': 16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.8.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4)
+      '@nx/eslint-plugin': 16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.10.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4)
     transitivePeerDependencies:
       - '@babel/traverse'
       - '@swc-node/register'
@@ -4545,7 +4549,7 @@ packages:
       tmp: 0.2.1
       tslib: 2.5.2
 
-  /@nx/eslint-plugin@16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.8.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4):
+  /@nx/eslint-plugin@16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.10.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4):
     resolution: {integrity: sha512-TOPXsKb7HtEvdmV5feX2nInPGrd61rj7EC+tl/Lz9aQDWm7VyROmMZomgfRsa/sS54jWch4YCz+8amCyw4I4cA==}
     peerDependencies:
       '@typescript-eslint/parser': ^5.58.0
@@ -4554,7 +4558,7 @@ packages:
       eslint-config-prettier:
         optional: true
     dependencies:
-      '@nrwl/eslint-plugin-nx': 16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.8.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4)
+      '@nrwl/eslint-plugin-nx': 16.2.1(@typescript-eslint/parser@5.59.6)(eslint-config-prettier@8.10.0)(eslint@8.40.0)(nx@16.2.1)(typescript@5.0.4)
       '@nx/devkit': 16.2.1(nx@16.2.1)
       '@nx/js': 16.2.1(nx@16.2.1)(typescript@5.0.4)
       '@typescript-eslint/parser': 5.59.6(eslint@8.40.0)(typescript@5.0.4)
@@ -4562,7 +4566,7 @@ packages:
       '@typescript-eslint/utils': 5.59.5(eslint@8.40.0)(typescript@5.0.4)
       chalk: 4.1.2
       confusing-browser-globals: 1.0.11
-      eslint-config-prettier: 8.8.0(eslint@8.40.0)
+      eslint-config-prettier: 8.10.0(eslint@8.40.0)
       semver: 7.3.4
     transitivePeerDependencies:
       - '@babel/traverse'
@@ -4789,7 +4793,7 @@ packages:
       style-loader: 3.3.2(webpack@5.81.0)
       stylus: 0.55.0
       stylus-loader: 7.1.0(stylus@0.55.0)(webpack@5.81.0)
-      terser-webpack-plugin: 5.3.9(esbuild@0.17.18)(webpack@5.80.0)
+      terser-webpack-plugin: 5.3.9(webpack@5.81.0)
       ts-loader: 9.4.2(typescript@5.0.4)(webpack@5.81.0)
       ts-node: 10.9.1(@types/node@18.16.3)(typescript@5.0.4)
       tsconfig-paths: 4.2.0
@@ -7445,8 +7449,8 @@ packages:
     optionalDependencies:
       source-map: 0.6.1
 
-  /eslint-config-prettier@8.8.0(eslint@8.40.0):
-    resolution: {integrity: sha512-wLbQiFre3tdGgpDv67NQKnJuTlcUVYHas3k+DZCc2U2BadthoEY4B7hLPvAxaqdyOGCzuLfii2fqGph10va7oA==}
+  /eslint-config-prettier@8.10.0(eslint@8.40.0):
+    resolution: {integrity: sha512-SM8AMJdeQqRYT9O9zguiruQZaN7+z+E4eAP9oiLNGKMtomwaB1E9dcgUD6ZAn/eQAb52USbvezbiljfZUhbJcg==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -10614,6 +10618,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     optional: true
 
   /pirates@4.0.5:
@@ -11131,6 +11136,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /psl@1.9.0:
@@ -12275,6 +12281,29 @@ packages:
       terser: 5.17.1
       webpack: 5.80.0(esbuild@0.17.18)
 
+  /terser-webpack-plugin@5.3.9(webpack@5.81.0):
+    resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      '@swc/core': '*'
+      esbuild: '*'
+      uglify-js: '*'
+      webpack: ^5.1.0
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      esbuild:
+        optional: true
+      uglify-js:
+        optional: true
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.18
+      jest-worker: 27.5.1
+      schema-utils: 3.1.2
+      serialize-javascript: 6.0.1
+      terser: 5.17.1
+      webpack: 5.81.0
+
   /terser@5.17.1:
     resolution: {integrity: sha512-hVl35zClmpisy6oaoKALOpS0rDYLxRFLHhRuDlEGTKey9qHjS1w9GMORjuwIMt70Wan4lwsLYyWDVnWgF+KUEw==}
     engines: {node: '>=10'}
@@ -13025,7 +13054,7 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.1.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.9(esbuild@0.17.18)(webpack@5.80.0)
+      terser-webpack-plugin: 5.3.9(webpack@5.81.0)
       watchpack: 2.4.0
       webpack-sources: 3.2.3
     transitivePeerDependencies:
