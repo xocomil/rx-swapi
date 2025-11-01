@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@angular/animations':
     specifier: 16.0.2
@@ -50,8 +54,8 @@ dependencies:
     specifier: ~7.8.0
     version: 7.8.1
   ts-pattern:
-    specifier: ^4.3.0
-    version: 4.3.0
+    specifier: ^5.0.0
+    version: 5.9.0
   tslib:
     specifier: ^2.5.2
     version: 2.5.2
@@ -4789,7 +4793,7 @@ packages:
       style-loader: 3.3.2(webpack@5.81.0)
       stylus: 0.55.0
       stylus-loader: 7.1.0(stylus@0.55.0)(webpack@5.81.0)
-      terser-webpack-plugin: 5.3.9(esbuild@0.17.18)(webpack@5.80.0)
+      terser-webpack-plugin: 5.3.9(webpack@5.81.0)
       ts-loader: 9.4.2(typescript@5.0.4)(webpack@5.81.0)
       ts-node: 10.9.1(@types/node@18.16.3)(typescript@5.0.4)
       tsconfig-paths: 4.2.0
@@ -9512,8 +9516,6 @@ packages:
     peerDependenciesMeta:
       webpack:
         optional: true
-      webpack-sources:
-        optional: true
     dependencies:
       webpack: 5.80.0(esbuild@0.17.18)
       webpack-sources: 3.2.3
@@ -9524,8 +9526,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.81.0
@@ -10614,6 +10614,7 @@ packages:
   /pify@4.0.1:
     resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==}
     engines: {node: '>=6'}
+    requiresBuild: true
     optional: true
 
   /pirates@4.0.5:
@@ -11131,6 +11132,7 @@ packages:
 
   /prr@1.0.1:
     resolution: {integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==}
+    requiresBuild: true
     optional: true
 
   /psl@1.9.0:
@@ -12275,6 +12277,29 @@ packages:
       terser: 5.17.1
       webpack: 5.80.0(esbuild@0.17.18)
 
+  /terser-webpack-plugin@5.3.9(webpack@5.81.0):
+    resolution: {integrity: sha512-ZuXsqE07EcggTWQjXUj+Aot/OMcD0bMKGgF63f7UxYcu5/AJF53aIpK1YoP5xR9l6s/Hy2b+t1AM0bLNPRuhwA==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      '@swc/core': '*'
+      esbuild: '*'
+      uglify-js: '*'
+      webpack: ^5.1.0
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      esbuild:
+        optional: true
+      uglify-js:
+        optional: true
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.18
+      jest-worker: 27.5.1
+      schema-utils: 3.1.2
+      serialize-javascript: 6.0.1
+      terser: 5.17.1
+      webpack: 5.81.0
+
   /terser@5.17.1:
     resolution: {integrity: sha512-hVl35zClmpisy6oaoKALOpS0rDYLxRFLHhRuDlEGTKey9qHjS1w9GMORjuwIMt70Wan4lwsLYyWDVnWgF+KUEw==}
     engines: {node: '>=10'}
@@ -12452,8 +12477,8 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  /ts-pattern@4.3.0:
-    resolution: {integrity: sha512-pefrkcd4lmIVR0LA49Imjf9DYLK8vtWhqBPA3Ya1ir8xCW0O2yjL9dsCVvI7pCodLC5q7smNpEtDR2yVulQxOg==}
+  /ts-pattern@5.9.0:
+    resolution: {integrity: sha512-6s5V71mX8qBUmlgbrfL33xDUwO0fq48rxAu2LBE11WBeGdpCPOsXksQbZJHvHwhrd3QjUusd3mAOM5Gg0mFBLg==}
     dev: false
 
   /tsconfig-paths-webpack-plugin@4.0.0:
@@ -13025,7 +13050,7 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.1.2
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.9(esbuild@0.17.18)(webpack@5.80.0)
+      terser-webpack-plugin: 5.3.9(webpack@5.81.0)
       watchpack: 2.4.0
       webpack-sources: 3.2.3
     transitivePeerDependencies:
